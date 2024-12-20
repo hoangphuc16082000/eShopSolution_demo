@@ -8,18 +8,16 @@ namespace eShopSolution.ViewModels.Catalog.Products
 {
     public class ProductCreateRequest
     {
-        public decimal Price { set; get; }
-        public decimal OriginalPrice { set; get; }
-        public int Stock { set; get; }
-        public string Name { set; get; }
-        public string Description { set; get; }
-        public string Details { set; get; }
-        public string SeoDescription { set; get; }
-        public string SeoTitle { set; get; }
-
-        public string SeoAlias { get; set; }
-        public string LanguageId { set; get; }
-
-        public IFormFile ThumbnailImage { get; set; }
+        public decimal Price { set; get; } = 0m;
+        public decimal OriginalPrice { set; get; } = 0m;
+        public int Stock { set; get; } = 0;
+        public string Name { set; get; } = string.Empty; // Giá trị mặc định
+        public string Description { set; get; } = string.Empty;
+        public string Details { set; get; } = string.Empty;
+        public string SeoDescription { set; get; } = string.Empty;
+        public string SeoTitle { set; get; } = string.Empty;
+        public string SeoAlias { get; set; } = string.Empty;
+        public string LanguageId { set; get; } = string.Empty; // Giá trị mặc định
+        public IFormFile? ThumbnailImage { get; set; } // Nullable
     }
 }
