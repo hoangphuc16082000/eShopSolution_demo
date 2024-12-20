@@ -1,4 +1,5 @@
 using eShopSolution.Application.Catalog.Products;
+using eShopSolution.Application.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -8,8 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<EShopDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Cấu hình CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+        policy.WithOrigins("http://localhost:4200")  // Địa chỉ ứng dụng Angular
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+});
+
 // Đăng ký dịch vụ
-builder.Services.AddScoped<IPublicProductService, PublicProductService>();
+builder.Services.AddTransient<IStorageService, FileStorageService>();
+
+builder.Services.AddTransient<IPublicProductService, PublicProductService>();
+builder.Services.AddTransient<IManageProductService, ManageProductService>();
 
 // Thêm các dịch vụ MVC
 builder.Services.AddControllersWithViews();
@@ -28,6 +41,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+// Áp dụng CORS trước các middleware khác
+app.UseCors("AllowSpecificOrigins");
 
 // Cấu hình Swagger (middleware)
 if (app.Environment.IsDevelopment())
